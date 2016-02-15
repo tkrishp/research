@@ -1,0 +1,1 @@
+yelping_since,compliments_plain,review_count,friends,compliments_cute,compliments_writer,fans,compliments_note,type,compliments_hot,compliments_cool,compliments_profile,average_stars,compliments_more,elite,name,user_id,votes_cool,compliments_list,votes_funny,compliments_photos,compliments_funny,votes_useful
