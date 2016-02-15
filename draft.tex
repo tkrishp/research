@@ -152,17 +152,77 @@ Collaborative filtering techniques are hugely popular and perform well where the
 	\item Cold-Start: A cold-start problem occurs when a new item is added to the catalog or a new user enters the system (Schein et al., 2002) \cite{schein}
 	\item Scalability: Requires very expensive computations and grows polynomially with the number of users and items in a database (Papagelis et al., 2005) \cite{papagelis}
 \end{enumerate}
-Model-based recommendation systems, in contrast, train a learning model to find patterns in the data and determine a parameter vector on feature dimension such that the prediction error (or loss) is minimized. Ge et al., (2011) \cite{ge}, Wu et al., (2014) \cite{wu}, Amini et al., (2014) \cite{amini} developed regression (predict the rating) models whereas Zhang et al., (2002) \cite{zhang-iyengar}, Resnick et al., (1997) \cite{resnick} developed classification (recommend item or not) models for the recommendation systems.
+
+\subsection{Supervised Learning}
+Machine learning algorithms can be classified as following types (Marsland, 2005) \cite{marsland}
+\begin{enumerate}
+	\item Supervised Learning: In this technique, algorithms are provided with a set of examples with correct responses and are trained iteratively till the algorithm generalizes to provide correct answers to all possible inputs. Also referred as model based approach because the trained algorithm returns a parameter vector (or model) such that the prediction error is minimized. 
+	\item Unsupervised Learning: Unlike supervised learning, in this approach, correct answers are not provided, instead, the algorithm attempts to categorize/cluster data into groups based on similarities.
+	\item Reinforcement Learning: This approach is somewhere in-between supervised and unsupervised learning methods, where the algorithm is told when the responses are incorrect but not about how to correct the error.
+	\item Evolutionary Learning: Genetic algorithms are considered evolutionary methods since organisms evolve over generations to adapt to surroundings such that their survival rate increases.
+\end{enumerate}
+
+Model-based recommendation systems train a learning model to find patterns in the data and determine a parameter vector on feature dimension such that the prediction error (or loss) is minimized. Ge et al., (2011) \cite{ge}, Wu et al., (2014) \cite{wu}, Amini et al., (2014) \cite{amini} developed regression (predict the rating) models whereas Zhang et al., (2002) \cite{zhang-iyengar}, Resnick et al., (1997) \cite{resnick} developed classification (recommend item or not) models for the recommendation systems.
 
 Accuracy of predictions is the most important property of a recommendation system and there are a number of options to measure it. Broadly, prediction accuracy measures are classified as (Ricci et al., 2011, p273) \cite{ricci}
-
 \begin{enumerate}
 	\item Ratings prediction: If the system predicts the rating of an item by a user (commonly used as 1-star to 5-star ratings), Root Mean Squared Error (RMSE), Sum of Square Error (SSE), Mean Square Error (MSE) and Mean Absolute Error (MAE) are common error metrics [find references on how these metrics are used with recommendations]
 	\item Class prediction: If the system models the predictions as a classification problem, where the predicted value is binary (yes/no, useful/not-useful), following error metrics are commonly used: Precision, Recall (True Positive Rate - TPR), False Positive Rate (FPR). A comparison curve of TPR and FPR, called Receive Operating Characteristic (ROC) curve, illustrates the performance of the classifier [find references]
 	\item Ranking prediction: If the system ranks items according to user's preference, Normalized Distance-based Performance Measure (NDPM), is commonly used as an error metric. [find references]
 \end{enumerate}
 
+\subsubsection{Artificial Neural Networks}
+TODO: origin of ANN, terminology of neurons, layers, activation functions.
+
+ANN were originally motivated by the goal of having machines that could mimic the brain. ANN's architecture consists of input later, hidden layer(s) and output layer. The input layer is the feature vector of training data with a bias term (figure \ref{fig:figure_ann_architecture}).
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{figure_ann_architecture}
+	\caption[ANN Architecture]{ANN Architecture}
+	\label{fig:figure_ann_architecture}
+\end{figure}
+
+ANNs are excellent nonlinear modeling tools for approximating any non-linear relationships and finding patterns within the data (Jang et al., 1997) \cite{jang}. A \textit{feedforward neural network} is a nonliner function of its inputs, in which information flows from input nodes to output nodes. Each neuron in the network is a nonlinear combination of inputs $x_i$ weighted by the parameters $w_i$
+
+Let $X$ be the training dataset with $n$ features, including the bias-term, then the output of a neuron is formulated as ($X \in R^{m \times n}, w \in R^{n}, y \in R ^{m}$):
+
+\begin{equation}
+f(y) = w^{T}  X 
+\end{equation}
+
+where $f$ is an activation function, a function that determines the actual output of the neuron. An activation function with nonlinear properties is important because of it's ability to discriminate relationships in the feature space and strongly influences the complexity and performance of a NN.  Duch et al., (1999) \cite{duch} performed an extensive research of activation functions (also referred as transfer functions with the domain of ANN) and Ozkan et al., (2003) \cite{ozkan} compared the performance of the following most common activation functions (Civco and Waug, 1994, Kaminsky et al., 1997) \cite{civco}, \cite{kaminsky}
+\begin{enumerate}
+	\item Linear: This is the identify activation function used for linear models
+	\begin{equation}
+	f(x) = x
+	\end{equation}
+	\item Sigmoid (Logisitc): Most commonly used activation function that has the range of $(0, 1)$
+	\begin{equation}
+	f(x) = \frac{1}{1 + e^{-x}}
+	\end{equation}
+	\item Tangent hyperbolic: Second most commonly used activation function after sigmoid and has the range of $(-1, +1)$
+	\begin{equation}
+	f(x) = \frac{1 - e^{2x}}{1 + e^{2x}}
+	\end{equation}
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+\subsection{Optimization}
+
+\subsection{Train, Test and Validation Approaches}
+
 \newpage\section{Results and Discussion}
+
+\subsection{Data model and Exploratory Data Analysis}
+
+\subsection{Results}
 
 \newpage\section{Conclusions}
 
@@ -219,8 +279,12 @@ Accuracy of predictions is the most important property of a recommendation syste
 \bibitem{zhang-narayan} Zhang, K., Narayanan, R., \& Choudhary, A. N. (2010). Voice of the Customers: Mining Online Customer Reviews for Product Feature-based Ranking. \textit{WOSN,10}, 11-11.
 \bibitem{zhang-iyengar} Zhang, T., \& Iyengar, V. S. (2002). Recommender systems using linear classifiers. \textit{The Journal of Machine Learning Research}, 2, 313-334.
 \bibitem{zheng} Zheng, Y. (2014). Semi-supervised context-aware matrix factorization: using contexts in a way of latent factors. \textit{Proceedings of the 29th Annual ACM Symposium on Applied Computing}. ACM.
-
-
+\bibitem{marsland} Marsland, Stephen. \textit{Machine learning: an algorithmic perspective}. CRC press, 2015.
+\bibitem{jang} J. -S. R. Jang, C.-T. Sun, and E. Mizutani, \textit{Neuro-Fuzzy and Soft Computing: A Computational Approach to Learning and Machine Intelligence}. Englewood Cliffs, NJ: Prentice-Hall, 1997.
+\bibitem{ozkan} Özkan, Coşkun, and Filiz Sunar Erbek. "The comparison of activation functions for multispectral Landsat TM image classification." \textit{Photogrammetric Engineering \& Remote Sensing} 69.11 (2003): 1225-1234.
+\bibitem{duch} Duch, Włodzisław, and Norbert Jankowski. "Survey of neural transfer functions." \textit{Neural Computing Surveys} 2.1 (1999): 163-212.
+\bibitem{civco} Civco, D., and Y. Waug, 1994. Classification of multispectral, multitemporal, multisource spatial data using artificial neural networks, \textit{ASPRS/ACSM Annual Convention \& Exposition}, 25–28 April, Reno, Nevada (American Society for Photogrammetry and Remote Sensing, Bethesda, Maryland), pp. 123–133 
+\bibitem{kaminsky} Kaminsky, E.J., H. Barad, and W. Brown, 1997. Textural neural network and version space classifiers for remote sensing, \textit{International Journal of Remote Sensing}, 18(4):741–762.
 
 \end{thebibliography} 
 
