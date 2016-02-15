@@ -98,6 +98,23 @@ def get_row(line_contents, column_names):
             row.append('')
     return row
 
+def conv_list_to_dict(json_file_path, new_json_file_path):
+    outfile = open(new_json_file_path, 'w')
+    with open(json_file_path) as fin:
+        for line in fin:
+            line_contents = json.loads(line)
+            line_contents['new_categories'] = {}
+            line_contents['new_neighborhoods'] = {}
+            for category in line_contents['categories']:
+                line_contents['new_categories'][category.replace(',','')] = True
+            for neighborhood in line_contents['neighborhoods']:
+                line_contents['new_neighborhoods'][neighborhood.replace(',','')] = True
+            json.dump(line_contents, outfile)
+            outfile.write('\n')
+    outfile.close()
+    return
+
+
 if __name__ == '__main__':
     """Convert a yelp dataset file from json to csv."""
 
@@ -115,6 +132,11 @@ if __name__ == '__main__':
 
     json_file = args.json_file
     csv_file = '{0}.csv'.format(json_file.split('.json')[0])
-
-    column_names = get_superset_of_column_names_from_file(json_file)
-    read_and_write_file(json_file, csv_file, column_names)
+    print json_file
+    print csv_file
+    new_json_file = '{0}_new.json'.format(json_file.split('.json')[0])
+    print new_json_file
+    conv_list_to_dict(json_file, new_json_file)
+    column_names = get_superset_of_column_names_from_file(new_json_file)
+    #print column_names
+    read_and_write_file(new_json_file, csv_file, column_names)
