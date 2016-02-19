@@ -13,8 +13,19 @@ import simplejson as json
 def read_and_write_file(json_file_path, csv_file_path, column_names):
     """Read in the json dataset file and write it out to a csv file, given the column names."""
     with open(csv_file_path, 'wb+') as fout:
-        csv_file = csv.writer(fout)
-        csv_file.writerow(list(column_names))
+        csv_file = csv.writer(fout, delimiter='|', quotechar='"')
+
+        r = {'&': "", ' ': "", '/': "", '-': "", "'": "", '(': '', ')': '', '.': ''}
+        col_names_wo_special = map(lambda x: "".join([r.get(c, c) for c in x.lower()]), column_names)
+        csv_file.writerow(col_names_wo_special)
+
+        # write old and new column names to a file
+        f = open(args.data_path + '/' + data_label + "_old_new_col_names.csv", "w")
+        f.write("old_column,new_column\n")
+        for i in range(len(list(column_names))):
+            f.write(list(column_names)[i] + "," + col_names_wo_special[i] + "\n")
+        f.close()
+
         with open(json_file_path) as fin:
             for line in fin:
                 line_contents = json.loads(line)
@@ -27,9 +38,7 @@ def get_superset_of_column_names_from_file(json_file_path):
     with open(json_file_path) as fin:
         for line in fin:
             line_contents = json.loads(line)
-            column_names.update(
-                    set(get_column_names(line_contents).keys())
-                    )
+            column_names.update(set(get_column_names(line_contents).keys()))
     return column_names
 
 
@@ -47,7 +56,7 @@ def get_column_names(line_contents, parent_key=''):
     """
     column_names = []
     for k, v in line_contents.iteritems():
-        column_name = "{0}.{1}".format(parent_key, k) if parent_key else k
+        column_name = "{0}____{1}".format(parent_key, k) if parent_key else k
         if isinstance(v, collections.MutableMapping):
             column_names.extend(
                     get_column_names(v, column_name).items()
@@ -98,45 +107,50 @@ def get_row(line_contents, column_names):
             row.append('')
     return row
 
+
 def conv_list_to_dict(json_file_path, new_json_file_path):
     outfile = open(new_json_file_path, 'w')
     with open(json_file_path) as fin:
         for line in fin:
             line_contents = json.loads(line)
-            line_contents['new_categories'] = {}
-            line_contents['new_neighborhoods'] = {}
-            for category in line_contents['categories']:
-                line_contents['new_categories'][category.replace(',','')] = True
-            for neighborhood in line_contents['neighborhoods']:
-                line_contents['new_neighborhoods'][neighborhood.replace(',','')] = True
+            if data_label == 'business':
+                line_contents['new_categories'] = {}
+                line_contents['new_neighborhoods'] = {}
+                for category in line_contents['categories']:
+                    line_contents['new_categories'][category.replace(',', '')] = True
+                for neighborhood in line_contents['neighborhoods']:
+                    line_contents['new_neighborhoods'][neighborhood.replace(',', '')] = True
+            else:
+                if data_label == 'user':
+                    line_contents['tot_friends'] = len(line_contents['friends'])
             json.dump(line_contents, outfile)
             outfile.write('\n')
     outfile.close()
     return
 
 
+def get_data_label(file_name):
+    return file_name[file_name.rfind('_')+1:file_name.find('.json')]
+
+
 if __name__ == '__main__':
     """Convert a yelp dataset file from json to csv."""
 
-    parser = argparse.ArgumentParser(
-            description='Convert Yelp Dataset Challenge data from JSON format to CSV.',
-            )
-
-    parser.add_argument(
-            'json_file',
-            type=str,
-            help='The json file to convert.',
-            )
-
+    parser = argparse.ArgumentParser(description='Convert Yelp Dataset Challenge data from JSON format to CSV.',)
+    parser.add_argument('data_path', type=str, help='director of data files')
+    parser.add_argument('json_file', type=str, help='The json file to convert.',)
     args = parser.parse_args()
 
-    json_file = args.json_file
+    data_label = get_data_label(args.json_file)
+    print data_label
+    json_file = args.data_path + '/' + args.json_file
     csv_file = '{0}.csv'.format(json_file.split('.json')[0])
-    print json_file
-    print csv_file
-    new_json_file = '{0}_new.json'.format(json_file.split('.json')[0])
-    print new_json_file
+    if data_label != 'review':
+        new_json_file = '{0}_new.json'.format(json_file.split('.json')[0])
+    else:
+        new_json_file = json_file
+
     conv_list_to_dict(json_file, new_json_file)
     column_names = get_superset_of_column_names_from_file(new_json_file)
-    #print column_names
     read_and_write_file(new_json_file, csv_file, column_names)
+
