@@ -13,10 +13,11 @@ import simplejson as json
 def read_and_write_file(json_file_path, csv_file_path, column_names):
     """Read in the json dataset file and write it out to a csv file, given the column names."""
     with open(csv_file_path, 'wb+') as fout:
-        csv_file = csv.writer(fout, delimiter='|', quotechar='"')
+        csv_file = csv.writer(fout, delimiter='\t', quotechar='"')
 
-        r = {'&': "", ' ': "", '/': "", '-': "", "'": "", '(': '', ')': '', '.': ''}
+        r = {'&': "", ' ': "", '/': "", '-': "", "'": "", '(': '', ')': ''}
         col_names_wo_special = map(lambda x: "".join([r.get(c, c) for c in x.lower()]), column_names)
+        col_names_wo_special = map(lambda x: x.replace('.', '_'), col_names_wo_special)
         csv_file.writerow(col_names_wo_special)
 
         # write old and new column names to a file
@@ -56,7 +57,7 @@ def get_column_names(line_contents, parent_key=''):
     """
     column_names = []
     for k, v in line_contents.iteritems():
-        column_name = "{0}____{1}".format(parent_key, k) if parent_key else k
+        column_name = "{0}.{1}".format(parent_key, k) if parent_key else k
         if isinstance(v, collections.MutableMapping):
             column_names.extend(
                     get_column_names(v, column_name).items()
