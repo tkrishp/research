@@ -10,15 +10,31 @@ import simplejson as json
 # Reference: https://github.com/Yelp/dataset-examples/blob/master/json_to_csv_converter.py
 
 
-def read_and_write_file(json_file_path, csv_file_path, column_names):
+def read_and_write_file(json_file_path, csv_file_path, column_names, review_txt_file_path):
     """Read in the json dataset file and write it out to a csv file, given the column names."""
     with open(csv_file_path, 'wb+') as fout:
+        if data_label == "review":
+            review_txt_file = csv.writer(open(review_txt_file_path, 'wb+'), delimiter='\t', quotechar='"')
+
         csv_file = csv.writer(fout, delimiter='\t', quotechar='"')
 
         r = {'&': "", ' ': "", '/': "", '-': "", "'": "", '(': '', ')': ''}
         col_names_wo_special = map(lambda x: "".join([r.get(c, c) for c in x.lower()]), column_names)
-        col_names_wo_special = map(lambda x: x.replace('.', '_'), col_names_wo_special)
-        csv_file.writerow(col_names_wo_special)
+        col_names_wo_special = map(lambda x: (data_label + '_' + x.replace('.', '_')), col_names_wo_special)
+
+        # don't preprend label to primary key columns
+        def update_header(x):
+            if data_label == 'user':
+                x = x.replace('user_user', 'user')
+            else:
+                if data_label == 'business':
+                    x = x.replace('business_business', 'business')
+                else:
+                    if data_label == 'review':
+                        x = x.replace('review_review', 'review').replace('review_user_id', 'user_id').replace('review_business_id', 'business_id')
+            return x
+        col_names_wo_special = map(lambda x: update_header(x), col_names_wo_special)
+        csv_file.writerow([x for x in col_names_wo_special if x != 'review_text'])
 
         # write old and new column names to a file
         f = open(args.data_path + '/' + data_label + "_old_new_col_names.csv", "w")
@@ -30,7 +46,14 @@ def read_and_write_file(json_file_path, csv_file_path, column_names):
         with open(json_file_path) as fin:
             for line in fin:
                 line_contents = json.loads(line)
-                csv_file.writerow(get_row(line_contents, column_names))
+                if data_label == "review":
+                    row = get_row(line_contents, column_names)
+                    review_text_row = [row[0], row[1], row[2]]
+                    review_row = [row[0], row[1], row[3], row[4], row[5], row[6], row[7], row[8], row[9]]
+                    review_txt_file.writerow(review_text_row)
+                    csv_file.writerow(review_row)
+                else:
+                    csv_file.writerow(get_row(line_contents, column_names))
 
 
 def get_superset_of_column_names_from_file(json_file_path):
@@ -146,12 +169,13 @@ if __name__ == '__main__':
     print data_label
     json_file = args.data_path + '/' + args.json_file
     csv_file = '{0}.csv'.format(json_file.split('.json')[0])
+    review_txt_file = ''
     if data_label != 'review':
         new_json_file = '{0}_new.json'.format(json_file.split('.json')[0])
+        conv_list_to_dict(json_file, new_json_file)
     else:
         new_json_file = json_file
-
-    conv_list_to_dict(json_file, new_json_file)
+        review_txt_file = '{0}_text.csv'.format(json_file.split('.json')[0])
     column_names = get_superset_of_column_names_from_file(new_json_file)
-    read_and_write_file(new_json_file, csv_file, column_names)
+    read_and_write_file(new_json_file, csv_file, column_names, review_txt_file)
 
