@@ -26,9 +26,9 @@
 \newtheorem{cor}{Corollary}\newcommand{\dspace}{\renewcommand{\baselinestretch}{1.5}\small\normalsize}
 \newcommand{\sspace}{\renewcommand{\baselinestretch}{1.0}\small\normalsize}
 
-\title{\textbf{Hybrid Recommender System \\Using Artificial Neural Networks}}
+\title{\textbf{A Hybrid Recommender System \\Using Artificial Neural Networks}}
 
-\author{\textbf{Tulasi Paradarami}\\Department of Predictive Analytics\\School of Professional Studies\\Northwestern University}
+\author{\textbf{Tulasi Paradarami}\\Department of Predictive Analytics\\School of Professional Studies\\Northwestern University\\\\\textbf{Master's Thesis Advisor:} Nathaniel D. Bastian, PhD}
 
 \date{}
 
@@ -46,136 +46,158 @@ Information Retrieval, Artificial Neural Networks, Recommender Systems, Supervis
 
 \newpage\section{Introduction}
 
-Information overload occurs when the amount of input to a system exceeds its processing capacity. Decision makers have fairly limited cognitive processing capability. Consequently, when information overload occurs, it is likely that a reduction in decision quality will occur Speicer et al., (1999) \cite{speier}, Milord et al., (1977) \cite{milord}, Miller (1956) \cite{miller g. a. 1956.txt}, Simon (1979) \cite{simon h. a. 1979.txt}. When a large amount of data is available in a variety of formats and reaching at a rate too high for the user to efficiently process, it leads to information overload (Edmunds and Morris, 2000) \cite{edmunds}. In the current era of smart devices and Web 2.0, there is a massive amount of data generated from a wide variety of sources including but not limited to social networking sites, multimedia sharing sites, hosted services, email, group communications, instant messages. It is getting harder for users to find relevant content on the web and on many occasions this information overload can cause users responding to the problem by omitting something important or making an error in the process of making a decision (Vickery and Vickery, 2004) \cite{vickery}. Whether it is for personal or professional needs, users cannot ignore the information available to them but need intelligent techniques that can efficiently filter the data and present most relevant information.
+Information overload occurs when the amount of input to a system exceeds its processing capacity. Decision makers have fairly limited cognitive processing capability. In addition, when a large amount of data is available in a variety of formats and reaching at a rate too high for the user to efficiently process, it leads to information overload \cite{edmunds}. Consequently, when information overload occurs, it is likely that a reduction in decision quality will occur \cite{speier,milord,miller g. a. 1956.txt,simon h. a. 1979.txt}. In the current era of smart devices and Web 2.0, there is a massive amount of data generated from a wide variety of sources including but not limited to social networking sites, multimedia sharing sites, hosted services, email, group communications, instant messages. It is getting harder for users to find relevant content on the web, and on many occasions this information overload can cause users to respond to the problem by omitting something important or making an error in the process of making a decision \cite{vickery}. Whether it is for personal or professional needs, users cannot ignore the information available to them but need intelligent techniques that can efficiently filter the data and present the most relevant information.
 
-A Recommender System (RS) is an application that is built to cope with the problem of information overload and provide intelligent suggestions on items to users (Ricci et al., 2011) \cite{ricci}, (Recommender Systems.html) \cite{recommender systems.html}. This ability of a RS to provide an efficient means to find relevant items is extremely useful because of which RS have become an important research area that has attracted attention in both academia and industry (Adomavicius and Tuzhilin, 2005) \cite{adomavicius-2005}. In simple terms, RS generates a personalized list of ranked items for users to buy from, where rank is computed from heterogenous sources of data acquired from the user like interests, likes and dislikes, demographics (Ricci et al., 2011) \cite{ricci}. Interest in recommender systems has remained high because of the wide variety of applications that can help deal with information overload by providing personalized recommendations. Few examples of these recommendation systems are product recommendations by Amazon.com (Linden et al., 2003) \cite{linden}, movies by Netflix (Amatriain, 2013) \cite{amatriain}, news articles (Nanas et al., 2010) \cite{nanas}, financial services (Felfernig et al., 2007) \cite{felfernig}, twitter (Gupta et al., 2013) \cite{gupta}. A RS can support a variety of functions that gives reason for service providers to deploy these techniques on their infrastructure. Some of the more important functions of RS are increasing sales by selling more items, improving user experience, satisfaction and better understand users' needs (Ricci et al., 2011) \cite{ricci}
+A recommender system (RS) is an application that is built to cope with the problem of information overload and provide intelligent suggestions on items to users \cite{ricci,recommender systems.html}. This ability of a RS to provide an efficient means to find relevant items is extremely useful, which has led RS to become an important research area that has attracted attention in both academia and industry \cite{adomavicius-2005}. In simple terms, RS generates a personalized list of ranked items for users to buy from, where rank is computed from heterogenous sources of data acquired from the user like interests, likes, dislikes, and demographics \cite{ricci}. Interest in recommender systems has remained high because of the wide variety of applications that can help deal with information overload by providing personalized recommendations. Few examples of these recommendation systems are product recommendations by Amazon.com \cite{linden}, movies by Netflix \cite{amatriain}, news articles \cite{nanas}, financial services \cite{felfernig}, and twitter \cite{gupta}. A RS can support a variety of functions that gives reason for service providers to deploy these techniques on their infrastructure. Some of the more important functions of RS are increasing sales by selling more items, improving user experience and satisfaction, and to understand better the users' needs \cite{ricci}.
 
-Recommender systems are broadly classified into following categories based on the underlying technique used for making recommendations (Adomavicius and Tuzhilin, 2005) \cite{adomavicius-2005}, (Burke, 2002) \cite{burke}, (Jannach et al., 2010) \cite{jannach}:
+Recommender systems are broadly classified into the following categories based on the underlying technique used for making recommendations \cite{adomavicius-2005,burke,jannach}:
 
 \begin{enumerate}
-\item Collaborative filtering: It evaluates the relevance of an item for a user based on the opinion of the members of a community (or cluster) (Nanas et al., 2010) \cite{nanas}. It runs on the premise that users with similar interests tend to prefer similar items.
-\item Content based filtering: It assumes that items with similar characteristics will be rated in a similar way (Wu et al., 2014) \cite{wu}. That is, it recommends items that are similar to the ones liked by the user in the past.
-\item Knowledge based recommender systems: Such a system recommends products based on specific domain knowledge on how certain item features satisfies users' needs and specifications (Ricci et al., 2011) \cite{ricci}. 
-\item Hybrid recommendation systems: Any combination two or more techniques described above can be categorized as a hybrid recommendation system (Jannach et al., 2010) \cite{jannach}.
+\item \textbf{Collaborative filtering:} It evaluates the relevance of an item for a user based on the opinion of the members of a community (or cluster) \cite{nanas}. It runs on the premise that users with similar interests tend to prefer similar items.
+\item \textbf{Content-based filtering:} It assumes that items with similar characteristics will be rated in a similar way \cite{wu}. That is, it recommends items that are similar to the ones liked by the user in the past.
+\item \textbf{Knowledge-based recommender systems:} Such a system recommends products based on specific domain knowledge on how certain item features satisfies users' needs and specifications \cite{ricci}. 
+\item \textbf{Hybrid recommendation systems:} Any combination two or more techniques described above can be categorized as a hybrid recommendation system \cite{jannach}.
 \end{enumerate}
 
-Artificial Neural Networks (ANNs) have a long history and research article of (McCulloch et al., 1943) \cite{mcculloch}, (Cochocki and Unbehauen, 1993) \cite{cochocki} is generally considered the beginning of Neurocomputing. After few years of calm, ANNs have started to gain popularity in 1980s (Cochocki and Unbehauen, 1993) \cite{cochocki} as the computational capabilities of computers started to meet the demands of an ANN. Neural Nets have an implicit ability to detect complex nonlinear relationships between dependent and independent variables, identify all possible interactions between predictor variables and the availability of multiple training algorithms (Tu, 1996) \cite{tu}. Therefore, a model built using an ANN is well positioned to learn the complex relationships between users and items and predict better recommendations.
+Artificial neural networks (ANN) have a long history, and the research of McCulloch et al. \cite{mcculloch} and Cochocki \& Unbehauen \cite{cochocki} are generally considered the beginning of Neurocomputing. ANNs started to gain popularity in 1980s \cite{cochocki} as the computational capabilities of computers started to meet the demands of an ANN. ANNs have an implicit ability to detect complex nonlinear relationships between dependent and independent variables, to identify all possible interactions between predictor variables, and to leverage the availability of multiple training algorithms \cite{tu}. Therefore, a model built using an ANN is well positioned to learn the complex relationships between users and items, as well as predict better recommendations.
 
-In this thesis research, we develop a new hybrid technique that builds on the capabilities provided by traditional approaches like collaborative filtering and content based filtering by making use of user reviews to train and build an Artificial Neural Network. We perform our experiments using Yelp Academic Dataset and show the improvements achieved by this recommendation system over traditional approaches.
+In this research, we develop a new hybrid RS technique that builds on the capabilities provided by traditional approaches like collaborative filtering and content-based filtering by making use of user reviews to train and build an ANN. We perform computational experiments using the Yelp Academic Dataset, and we show the improvements achieved by this hybrid recommendation system over traditional approaches.
 
-\section{Literature Review}
+\subsection{Literature Review}
 
-There has been an extensive work done to build recommendation systems using different machine learning techniques like Bayesian (Guo, 2011) \cite{guo}, Clustering (Pham et al., 2011) \cite{pham}, Artificial Neural Networks (Asela and Meek, 2009) \cite{gunawardana}, Linear regression (Ge et al., 2011) \cite{ge}, Probabilistic models (Li et al., 2007) \cite{li}, etc by training a model that learns from the data with the goal of minimizing error while predicting the rating of an item for each user. Hybrid recommendation systems combine two or more recommendation techniques to improve performance and have fewer limitations compared to stand-alone techniques. Below is a list of methods that are commonly used (Burke, 2002) \cite{burke}, [Hybrid Web Recommendation Systems]:
+Extensive work has been done to build recommendation systems using different machine learning techniques such as Bayesian methods \cite{guo}, clustering \cite{pham}, ANNs \cite{gunawardana}, linear regression \cite{ge}, and probabilistic models \cite{li}. Each method trains a model that learns from the data with the goal of minimizing error while predicting the rating of an item for each user. Hybrid recommendation systems combine two or more recommendation techniques to improve performance and have fewer limitations compared to stand-alone techniques. Below is a list of methods that are commonly used in building hybrid recommendation systems \cite{burke}:
 
 \begin{itemize}
-\item Weighted: A linear combination of predictions from different recommendation techniques is computed to get the final recommendation
-\item Switching: Using a switching criteria, the system switches between different recommendation techniques
-\item Mixed: A list of results from all recommendations derived from applying various techniques are presented as a unified list without applying any computations to combine the results
-\item Feature Combination: Results from the collaborative technique is used as another feature to build a content based system over the augmented feature set
-\item Cascade: Multistage technique that combines the results from different recommendation techniques in a prioritized manner 
-\item Feature Augmentation: Another technique that runs in multiple stages such that the rating or classification from an initial stage is used as an additional feature in the subsequent stages
-\item Meta-level: Model generated from a recommendation technique acts as an input to the next recommendation technique in the following stage
+\item \textbf{Weighted:} A linear combination of predictions from different recommendation techniques is computed to get the final recommendation.
+\item \textbf{Switching:} Using a switching criteria, the system switches between different recommendation techniques.
+\item \textbf{Mixed:} A list of results from all recommendations derived from applying various techniques are presented as a unified list without applying any computations to combine the results.
+\item \textbf{Feature Combination:} Results from the collaborative technique are used as another feature to build a content-based system over the augmented feature set.
+\item \textbf{Cascade:} Multistage technique that combines the results from different recommendation techniques in a prioritized manner. 
+\item \textbf{Feature Augmentation:} Another technique that runs in multiple stages such that the rating or classification from an initial stage is used as an additional feature in the subsequent stages.
+\item \textbf{Meta-level:} Model generated from a recommendation technique acts as an input to the next recommendation technique in the following stage.
 \end{itemize}
-\ \ Content based and collaborative recommendation techniques will always suffer from ``new item'' and/or ``new user'' problems since both techniques require prior history to produce effective predictions and the hybridization techniques discussed above alleviate some of these limitations. 
 
-\ \ Balabanoic et al., (1997) \cite{balabanovic} propose a hybrid recommendation engine that performs content based analysis using user profiles to identify clusters of similar users. This knowledge is used towards building a collaborative recommendation. This approach has the advantage of making good recommendations to users that don't share similarity with other users by building a profile based on content of the items. Melville et al., (2002) \cite{melville} is a content-boosted collaborative filtering recommendation technique that proposes a method to solve the problem of sparse rating data. For each user, a pseudo user-ratings vector is created such that if the user has rated an item, that rating is used and if an item is not rated, a pure content-based recommendation system is used to predict the rating. Using the pseudo user-rating vectors for all users, a dense matrix of user-ratings is generated that is then used as input to collaborative filtering to compute final recommendations. User pair similarity is computed using the Pearson correlation coefficient (Equation: 5).  Harmonic Mean Weighting is computed to incorporate confidence in correlations and Self Weighting factor, a final content boosted collaborative filtering prediction for an active user is generated. 
+Content-based and collaborative recommendation techniques will always suffer from ``new item'' and/or ``new user'' problems since both techniques require prior history to produce effective predictions and the hybridization techniques discussed above alleviate some of these limitations. 
 
-In situations when there is a predictable pattern in user actions like in an e-learning environment, the items a user is interested depends on how far he is in the learning process of any subject/course. Chen et al., (2014) \cite{chen} propose a two stage hybrid recommendation system for an e-learning environment to recommend items in users' learning process. The two stages of this system are (1) item based collaborative filtering to discover related item sets and (2) Sequential Pattern Mining (SPM) algorithm to filter items according to common learning patterns. 
+Balabanoic et al. \cite{balabanovic} propose a hybrid recommendation engine that performs content-based analysis using user profiles to identify clusters of similar users. This knowledge is used towards building a collaborative recommendation. This approach has the advantage of making good recommendations to users that do not share similarity with other users by building a profile based on content of the items. Melville et al. \cite{melville} develop a content-boosted collaborative filtering recommendation technique that proposes a method to solve the problem of sparse rating data. For each user, a vector of pseudo user-ratings is created such that if the user has rated an item, that rating is used and if an item is not rated, a pure content-based recommendation system is used to predict the rating. Using the pseudo user-rating vectors for all users, a dense matrix of user-ratings is generated that is then used as input to collaborative filtering to compute final recommendations. User pair similarity is computed using the Pearson correlation coefficient. Harmonic mean weighting is computed to incorporate confidence in correlations, and a final content-boosted collaborative filtering prediction for an active user is generated. 
 
-Schein et al., (2002) \cite{schein} propose a hybrid recommendation technique that combines content and collaborative data under a single probabilistic framework with a focus to demonstrate empirically that the various components of the testing framework, developed using a new performance metric called the CROC curve, combine to obtain deeper understanding of the performance characteristics of the recommendation systems. Schein et al., (2002) \cite{schein} differs from Balabanovic and Shoham (1997) \cite{balabanovic}, Melville et al., (2002) \cite{melville}, Chen et al., (2014) \cite{chen} by proposing a machine learning probabilistic model that combines content and collaborative information using expectation maximization (EM) learning to fit the model to the data. Asela and Meek (2009) \cite{gunawardana} also propose a new hybrid model using model based approach with unified Boltzmann machines, which are probabilistic models that combine content and collaborative information in a coherent manner. Using the content and collaborative information as feature vectors, parameter weights that reflects how well each feature predicts user actions are learnt by model training. This unified approach has an advantage over other approaches because there is no need for careful feature engineering or post-hoc hybridization of distinct recommender systems. Asela and Meek (2009) \cite{gunawardana} is constrained to predicting future binary actions by the user like, buying a book or watching a movie. \ 
+In situations when there is a predictable pattern in user actions like in an e-learning environment, the items a user is interested in depends on how far he/she is in the learning process of any subject/course. Chen et al. \cite{chen} propose a two-stage hybrid recommendation system for an e-learning environment to recommend items in users' learning process. The two stages of this system are: 1) item-based collaborative filtering to discover related item sets, and 2) a sequential pattern mining algorithm to filter items according to common learning patterns. 
 
-Schein et al., (2002) \cite{schein}, Balabanovic and Shoham (1997) \cite{balabanovic}, Melville et al., (2002) \cite{melville}, Chen et al., (2014) \cite{chen}, Asela and Meek (2009) \cite{gunawardana} all propose different kinds of hybrid models that utilize both content and collaborative information to develop a combination of memory and model based recommendation systems but in this era of Web 2.0, it is common for most websites to give users an option to write reviews of the products in addition to providing a rating. Text analytics and/or sentiment analysis techniques enable the extraction reviewer's sentiment, latent factors, opinion and contextual information. In situations where ratings are not available, reviews are used to infer the customer's preference for a product from the opinion expressed in the reviews - referred to as a virtual rating (Zhan et al., 2010) \cite{zhang-narayan} and is used in a traditional approach like Collaborative Filtering. 
+Schein et al. \cite{schein} propose a hybrid recommendation technique that combines content and collaborative data under a single probabilistic framework with a focus to demonstrate empirically that the various components of the testing framework, developed using a new performance metric called the CROC curve, combine to obtain deeper understanding of the performance characteristics of the recommendation systems. Schein et al. \cite{schein} differs from Balabanovic \& Shoham \cite{balabanovic}, Melville et al. \cite{melville}, and Chen et al. \cite{chen} by proposing a machine learning probabilistic model that combines content and collaborative information using expectation maximization (EM) learning to fit the model to the data. Asela \& Meek \cite{gunawardana} also propose a new hybrid system using a model-based approach with unified Boltzmann machines, which are probabilistic models that combine content and collaborative information in a coherent manner. Using the content and collaborative information as feature vectors, parameter weights that reflects how well each feature predicts user actions are learned by model training. This unified approach has an advantage over other approaches because there is no need for careful feature engineering or post-hoc hybridization of distinct recommender systems. Asela \& Meek \cite{gunawardana} is constrained to predicting future binary actions by the user, such as buying a book or watching a movie. 
 
-In situations when both reviews and ratings are available, extensive research has been done by using reviews to augment and enhance ratings with collaborative filtering technique. Review information is augmented in different ways with ratings such as review helpfulness (Raghavan et al., 2012) \cite{raghavan}, context using LDA (Hariri et al., 2011) \cite{hariri-2011}, (Zhen (2014) \cite{zheng}, (Moshfeghi et al., 2011) \cite{moshfeghi}, overall opinion (Pero et al., 2013) \cite{pero}, (Blattner and Medo, 2012) \cite{blattner}, emotion (Moshfeghi et al., 2011) \cite{moshfeghi}
+Schein et al. \cite{schein}, Balabanovic \& Shoham \cite{balabanovic}, Melville et al. \cite{melville}, Chen et al. \cite{chen}, and Asela \& Meek \cite{gunawardana} all propose different kinds of hybrid models that utilize both content and collaborative information to develop a combination of memory and model-based recommendation systems. In this era of Web 2.0, it is common for most websites to give users an option to write reviews of the products in addition to providing a rating. Text analytics and/or sentiment analysis techniques enable the extraction of reviewers' sentiment, latent factors, opinions, and contextual information. In situations where ratings are not available, reviews are used to infer the customers' preference for a product from the opinion expressed in the reviews -- referred to as a virtual rating as described by Zhan et al. \cite{zhang-narayan}; this virtual rating is used in a traditional approach like collaborative filtering. 
 
-Raghavan et al., (2012) \cite{raghavan} propose a two stage model that first estimates review quality score using the formula: ratio of ``helpful votes'' to ``total votes'' (originally proposed in Kim et al., 2006 \cite{kim}) which is weighted with the user rating. For recent reviews that do not have enough votes to compute quality score, a regression model is trained to predict rating quality score directly from the review text. Various feature extraction methods were evaluated using text mining techniques like bag-of-words, topic modeling and content (metadata) based features and hybrid method using both text and metadata based feature extraction. In the second stage, a probabilistic collaborative filtering model was developed based on quality score weighted rating. 
+In situations when both reviews and ratings are available, extensive research has been done by using reviews to augment and enhance ratings with the collaborative filtering technique. Review information is augmented in different ways with ratings such as review helpfulness \cite{raghavan}, context using latent dirichlet allocation (LDA) \cite{hariri-2011, zheng, moshfeghi}, overall opinion \cite{pero, blattner}, and emotion \cite{moshfeghi}.
 
-There has been extensive research performed in this field as described in these papers (Champiri et al., 2015) \cite{champiri}, (Hariri et al., 2011) \cite{hariri-2011}, (Hariri et al., 2012) \cite{hariri-2012}, (Zheng, 2014) \cite{zheng}, (Adomavicius and Tuzhilin, 2011) \cite{adomavicius-2011}. (Champiri et al., 2015) \cite{champiri} conducted a review to identify contextual information and methods for recommendations in digital libraries. Hariri et al., \cite{hariri-2011} propose a new model that is context aware and the inferred context is used to define a utility function for the items reflecting how much each item is preferred by a user given his/her current context. Context inference was achieved using Labeled Latent Drichlet Allocation since it performed well for the ``TripAdvisor'' dataset used for this research. Standard item-based kNN was used to compute the utility score for an item $i$ and user $u$ and is defined as a linear combination of $predictedRating(u, i)$ and $contextScore(u, i)$. 
+Raghavan et al. \cite{raghavan} propose a two-stage model that first estimates a review quality score using the formula: ratio of ``helpful votes'' to ``total votes'' (originally proposed by Kim et al. \cite{kim}) which is weighted with the user rating. For recent reviews that do not have enough votes to compute a quality score, a regression model is trained to predict rating quality score directly from the review text. Various feature extraction methods were evaluated using text mining techniques like bag-of-words, topic modeling, content (metadata) based features, and a hybrid method using both text and metadata-based feature extraction. In the second stage, a probabilistic collaborative filtering model is developed based on a quality score weighted rating. 
 
-Opinion based recommendation system is another domain of active research; Pero and Horvath, 2013 \cite{pero} utilize both ratings and inferred opinions from product reviews to propose a new model using matrix factorization for predicting ratings. Blattner and Medo, 2012 \cite{blattner} formulated within an opinion formation framework where social types play a major role and user's opinions are assembled in two stages, i.e, external sources and social interactions. 
+There has been extensive research performed in this field as described in \cite{champiri, hariri-2011, hariri-2012, zheng, adomavicius-2011}. Champiri et al. \cite{champiri} conduct a review to identify contextual information and methods for recommendations in digital libraries. Hariri et al. \cite{hariri-2011} propose a new model that is context aware and the inferred context is used to define a utility function for the items reflecting how much each item is preferred by a user given his/her current context. Context inference is achieved using labeled LDA, which performed well for the ``TripAdvisor'' dataset used for this research. Standard item-based $k$-nearest neighbors is used to compute the utility score for an item $i$ and user $u$ and is defined as a linear combination of $predictedRating(u, i)$ and $contextScore(u, i)$. 
 
-Moshfeghi et al., (2011) \cite{moshfeghi} tackle the issues of data sparsity and cold-start by proposing a framework that is an extension of LDA (Latent Dirichlet Allocation) and gradient boosted trees and considers item related semantics and emotion. They identify semantic and emotion space to construct latent groups of users and in each space the probability that a user likes an item is computed. Finally, the information from different spaces is aggregated using supervised machine learning techniques like gradient boosted trees. 
+Opinion-based recommendation systems is another domain of active research. Pero \& Horvath \cite{pero} utilize both ratings and inferred opinions from product reviews to propose a new model using matrix factorization for predicting ratings. Blattner \& Medo \cite{blattner} formulate within an opinion formation framework where social types play a major role and users' opinions are assembled in two stages (external sources and social interactions). 
 
-Amini et al., (2014) \cite{amini}, Lee et al., (2002) \cite{lee} propose new recommender frameworks that also utilizes content/metadata in addition to ratings to improve the accuracy of the item predictions. They both utilize ANN to build a hybrid recommendation engine but differ in what role ANN plays in their frameworks. Amini et al., (2014) \cite{amini} build a hybrid classifier using collaborative and content based data available in MovieLens dataset. Following classification models were trained and evaluated: Spiking Neural Network (SNN), Multi-Layer Perceptron Neural Network (MLP), Decision Tree, and Naive Bayes. However, Lee et al., (2002) \cite{lee} propose a recommendation engine that utilizes Self-Organizing Map (SOM) neural network to improve the scalability and performance of the traditional CF technique. In the first stage, M. Lee, P. Choi, and Y. Woo segment users based on demographics and then cluster them according to preference of items using the SOM neural network. To recommend items for a user, the user's cluster is first determined and CF algorithm is applied to all the users whom belong to same cluster in order to predict user's preference for the items. Experimental results show that the proposed system has better predictability than the traditional CF based approach and also greatly improves the computational time to calculate correlation coefficients. M. Lee, P. Choi, and Y. Woo differentiate their approach from other research discussed in this paper by preprocessing the data to decrease the dimensionality of the user and item space before computing correlation coefficients. 
+Moshfeghi et al. \cite{moshfeghi} tackle the issues of data sparsity and cold-start by proposing a framework that is an extension of LDA and gradient boosted trees that considers item-related semantics and emotion. They identify semantic and emotion space to construct latent groups of users, and in each space the probability that a user likes an item is computed. Finally, the information from different spaces is aggregated using supervised machine learning techniques like gradient boosted trees. 
+
+Amini et al. \cite{amini} and Lee et al. \cite{lee} propose new recommender frameworks that also utilize content/metadata in addition to ratings to improve the accuracy of the item predictions. They both utilize ANN to build a hybrid recommendation engine but differ in what role the ANN plays in their frameworks. Amini et al. \cite{amini} build a hybrid classifier using collaborative and content-based data available in the MovieLens dataset. The following classification models were trained and evaluated: spiking neural network, multi-layer perceptron neural network, decision tree, and naive bayes. However, Lee et al. \cite{lee} propose a recommendation engine that utilizes a self-organizing map (SOM) neural network to improve the scalability and performance of the traditional collaborative filtering (CF) technique. In the first stage, Lee et al. \cite{lee} segment users based on demographics and then cluster them according to preference of items using the SOM neural network. To recommend items for a user, the user's cluster is first determined and the CF algorithm is applied to all the users whom belong to same cluster in order to predict the user's preference for the items. Experimental results show that the proposed system has better predictability than the traditional CF-based approach and also greatly improves the computational time to calculate correlation coefficients. Lee et al. \cite{lee} differentiate their approach from other research by preprocessing the data to decrease the dimensionality of the user and item space before computing correlation coefficients. 
 
 \subsection{Research Objectives}
 
-Collaborative filtering algorithms that use rating information are hugely popular but in this era of Web 2.0 where user reviews are available for most of the products/services, this information can be mined efficiently and used in combination with rating data to deliver high quality recommendations. Reviews are typically written in text form describing their assessment of the product or experience of the service provided, however, rating is a homogenous value and does not capture the sentiment and/or context behind users' experience the way a review would. For example, a young family really liked their experience at a restaurant that had child friendly services readily available and hence, give a very high rating for the restaurant with following review ``This is an excellent restaurant with child friendly services that makes it an ideal place to visit for families with young children. However, if you are on date this is not ideal because it can be bit noisy''. By performing text analysis of this reviews, we can find the latent factor ``family friendly'' which would not have been possible by using only rating information. 
+Collaborative filtering algorithms that use rating information are hugely popular but in this era of Web 2.0 where user reviews are available for most of the products/services.  This information can be mined efficiently and used in combination with rating data to deliver high quality recommendations. Reviews are typically written in text form describing their assessment of the product or experience of the service provided. However, rating is a homogeneous value and does not capture the sentiment and/or context behind users' experience in the way that a review would. For example, a young family really liked their experience at a restaurant that had child-friendly services readily available and, hence, give a very high rating for the restaurant with following review: ``This is an excellent restaurant with child-friendly services that makes it an ideal place to visit for families with young children. However, if you are on date this is not ideal because it can be bit noisy''. By performing text analysis of this review, we can find the latent factor ``family friendly'' which would not have been possible by using only rating information. 
 
-As far as we know, there is very little research done that uses the combination of reviews and ratings in conjunction with user and item metadata to develop a supervised learning rating prediction model. In general, an efficient recommender system should be able to model and capture the complex, nonlinear relationships between users and items. Artificial Neural Networks are particularly well suited to learn about these relationships. In this paper, we extend the previous work to define a new rating variable called ``enhanced rating (EnhR)'' that is derived from the user's reputation, review helpfulness and item rating. We train a machine learning model using Artificial Neural Network to predict EnhR and demonstrate the improvement in recommendation predictions; we demonstrate how well the proposed technique works by performing experiments using Yelp Academic Dataset.
+As far as we know, there is very little research done that uses the combination of reviews and ratings in conjunction with user and item metadata to develop a supervised learning rating prediction model. In general, an efficient recommender system should be able to model and capture the complex, nonlinear relationships between users and items. ANNs are particularly well-suited to learn about these relationships. In this paper, we extend the previous literature to define a new rating variable called ``enhanced rating (EnhR)'', which is derived from the user's reputation, review helpfulness, and item rating. We train a machine learning model using ANNs to predict EnhR and evaluate the improvement in recommendation predictions. Further, we demonstrate how well the proposed technique works by performing computational experiments using the Yelp Academic Dataset.
 
-\newpage\section{Materials and Methods}
+\section{Materials and Methods}
 
-Recommendation system implementations can be broadly categorized as in-memory and model-based. In a memory based model, statistical techniques are applied in order to find users with similar preferences (neighbors). A weighted average of the ratings from users in the neighborhood is computed for the purpose (Carrillo et al., 2013) \cite{carrillo}. On the other hand, model based techniques use data mining algorithms to train a model for predicting user recommendations.
+\subsection{Data Model}
+We demonstrate the efficiency of this approach using Yelp Dataset \cite{yelp-dataset}. This data source contains rich set of relational data objects for business, users, reviews, tips and checkins. For the purpose of the research, business, users and reviews data objects are used. The relational model of these objects is shown in Figure: \ref{fig:figure_er_diagram}
 
-Collaborative filtering technique, an in-memory model, was developed by computing pairwise similarities among users and items (Breese et al., 1998) \cite{breese}. Weighted arithmetic mean is commonly used in a RS in conjunction with the similarity metric to compute the predicted rating for a user-item pair. 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{figure_er_diagram}
+\caption{Entity-Relationship Diagram}
+\label{fig:figure_er_diagram}
+\end{figure}
 
-Let  $ R(u, i) $ be the rating to be computed for user $ u $ and item $ i $. $ U $ is the set of users that have rated the item $ i $ and $sim(u, u_{k})$ is the similarity between the users $u$ and $u_{k}$ (Ricci et al., 2011, p 39 - 42) \cite{ricci}, (Sorensen, 2012) \cite{sorensen}
-\begin{equation}
-R(u, i) = {\sum\limits^{}_{i\in{U}} sim(u, u_{k}) * r(u_{k}, i)}
-\end{equation}
-Similarity functions are real valued functions that measure the degree of similarity between a pair of objects and are commonly used in Collaborative Filtering techniques to measure similarity between users and items. Here are some of the common similarity measures (Ricci et al., 2011, p39 - 42) \cite{ricci}:
+The dataset has a total of $61,184$ businesses from $27$ different cities with $366,715$ users who wrote $1,569,264$ reviews. A business can be categorized as one of the 783 categories such as \textit{Appliances \& Repair}, \textit{Bars}, \textit{Car Rental}, \textit{Doctors}, \textit{Restaurants}, etc. and review content and style can vary for different categories of businesses. For the research, we choose the category \textit{Restaurants} but the concepts, analysis and results of this research can be extended to other categories. We choose PA state that has $3,041$ businesses and further filter the data under for the category \textit{Restaurants} which results in $1,361$ restaurants.
 
+Business Content
 \begin{itemize}
-	\item Euclidean distance: In a n{}-dimensional space, Euclidean distance between two vectors $p$ and $q$ is defined as
-	\begin{equation}
-	E(p, q) = \sqrt{\sum_{i=1}^n (p_{i} - q_{i})^{2}}
-	\end{equation} 
+	\item business\_id: Unique id (hash) of the business
+	\item full\_address, city, state: Postal address of the business
+	\item hours: The hours a business is open for each day of the week
+	\item open: A yes/no flag to indicate if the business is open for service
+	\item categories: A list of categories that describe the service provided at the business
+	\item review\_count: Total count of reviews received by the business
+	\item name: Name of the business
+	\item neighborhoods: A list of categories describing the neighborhood of the business
+	\item longitude, latitude: Longitude and latitude of the businesses' location
+	\item stars: Average rating for the business
+	\item attributes: A list of categories that describes the business (ex: Ambience, Music, Noise Level, Parking, etc)
+	\item takes reservations, delivery, parking, wheelchair accessible, outdoor seating, has tv, accepts cards, good for kids/groups: A yes/no flag to indicate if the service/amenity is available at the business
+	\item attire: Style of attire recommended for customers visiting the business
+	\item price range: On a scale of of 1-4, use 1 for low price and 4 for high price business
+	
+	\item 783 categories
+	\item 78 attributes
+	\item 15 hours
+	\item 175 neighborhoods
+	\item 6 parking
 \end{itemize}
-\begin{itemize}
-	\item Minkowski distance: It is a generalization of Euclidean distance and defined as
-	\begin{equation}
-	M(p, q) = ({\sum_{i=1}^n |p_{i} - q_{i}|^{r}})^{\dfrac{1}{r}}
-	\end{equation} 
-\end{itemize}
-\begin{itemize}
-	\item Mahalanobis distance: The Mahalanobis distance is a measure of the distance between a point P and a distribution D, introduced by P. C. Mahalanobis (Mahalanobis, 1936) \cite{mahalanobis} where $\sigma$ is covariance matrix of the data
-	\begin{equation}
-	M(p, q) = \sqrt{(p - q) \sigma^{-1} (p - q)^{T}}
-	\end{equation} 
-\end{itemize}
-\begin{itemize}
-	\item Cosine similarity: It is a very common approach that measures similarity as cosine of the angle between n-dimensional vectors where $.$ is vector dot product and $ ||p|| $ is  norm of the vector
-	\begin{equation}
-	cos(p, q) = \dfrac{(p \bullet q)}{\lVert p \Vert \Vert q \Vert}
-	\end{equation} 
-\end{itemize}
-\begin{itemize}
-	\item Pearson correlation: It is a measure of correlation between two data points, $p$ and $q$ is
-	\begin{equation}
-	P(p, q) = \dfrac{cov(p, q)}{\sigma _{p} \times \sigma _{q}}
-	\end{equation} 
-\end{itemize}
-Collaborative filtering techniques are hugely popular and perform well where there is sufficient rating information but their effectiveness suffers from following well-known problems:
-\begin{enumerate}
-	\item Data Sparsity: It is related to the unavailability of ratings for a large number of items (Linden et al., 2003) \cite{linden}. 
-	\item Cold-Start: A cold-start problem occurs when a new item is added to the catalog or a new user enters the system (Schein et al., 2002) \cite{schein}
-	\item Scalability: Requires very expensive computations and grows polynomially with the number of users and items in a database (Papagelis et al., 2005) \cite{papagelis}
-\end{enumerate}
 
-\subsection{Supervised Learning}
-Machine learning algorithms can be classified as following types (Marsland, 2005) \cite{marsland}
-\begin{enumerate}
-	\item Supervised Learning: In this technique, algorithms are provided with a set of examples with correct responses and are trained iteratively till the algorithm generalizes to provide correct answers to all possible inputs. Also referred as model based approach because the trained algorithm returns a parameter vector (or model) such that the prediction error is minimized. 
-	\item Unsupervised Learning: Unlike supervised learning, in this approach, correct answers are not provided, instead, the algorithm attempts to categorize/cluster data into groups based on similarities.
-	\item Reinforcement Learning: This approach is somewhere in-between supervised and unsupervised learning methods, where the algorithm is told when the responses are incorrect but not about how to correct the error.
-	\item Evolutionary Learning: Genetic algorithms are considered evolutionary methods since organisms evolve over generations to adapt to surroundings such that their survival rate increases.
-\end{enumerate}
+$78\%$ of the businesses receive $50$ or less reviews with an average rating of $3.6$ and the distribution of review counts in shown in \ref{fig:histogram_review_count}
 
-Model-based recommendation systems train a learning model to find patterns in the data and determine a parameter vector on feature dimension such that the prediction error (or loss) is minimized. Ge et al., (2011) \cite{ge}, Wu et al., (2014) \cite{wu}, Amini et al., (2014) \cite{amini} developed regression (predict the rating) models whereas Zhang et al., (2002) \cite{zhang-iyengar}, Resnick et al., (1997) \cite{resnick} developed classification (recommend item or not) models for the recommendation systems.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{histogram_review_count}
+\caption{Review Counts}
+\label{fig:histogram_review_count}
+\end{figure}
 
-Accuracy of predictions is the most important property of a recommendation system and there are a number of options to measure it. Broadly, prediction accuracy measures are classified as (Ricci et al., 2011, p273) \cite{ricci}
-\begin{enumerate}
-	\item Ratings prediction: If the system predicts the rating of an item by a user (commonly used as 1-star to 5-star ratings), Root Mean Squared Error (RMSE), Sum of Square Error (SSE), Mean Square Error (MSE) and Mean Absolute Error (MAE) are common error metrics [find references on how these metrics are used with recommendations]
-	\item Class prediction: If the system models the predictions as a classification problem, where the predicted value is binary (yes/no, useful/not-useful), following error metrics are commonly used: Precision, Recall (True Positive Rate - TPR), False Positive Rate (FPR). A comparison curve of TPR and FPR, called Receive Operating Characteristic (ROC) curve, illustrates the performance of the classifier [find references]
-	\item Ranking prediction: If the system ranks items according to user's preference, Normalized Distance-based Performance Measure (NDPM), is commonly used as an error metric. [find references]
-\end{enumerate}
 
-\subsubsection{Artificial Neural Networks}
+
+Out of the available 33 attribute types, we identify a subset of types that have data for at-least 70\% of the examples and are relevant to a restaurant business and these attribute types are  \textit{Order at Counter, Alcolhol, Ambience, Price Range, Takeout, Good for, Parking, Attire, Caters, Accepts Credit Cards, Delivery, Has TV, Outdoor Seating, Parking Lot, Waiter Serice, WIFI, Takes Reservations, Noise Level}. On an average a restaurant receives $37$ reviews with a rating of $3.6$
+
+
+
+User Content
+Out of $366,715$ users, $14,466$ have written reviews for restaurants in PA. A user object has following attributes:
+\begin{itemize}
+	\item yelping\_since: Date from when the user has started yelping
+	\item votes: Votes received by the user for categories like cool, funny and useful from other users on Yelp
+	\item review\_count: Total reviews posted
+	\item name: User name
+	\item user\_id: Unique id (hash) of the user name
+	\item friends: List of ids of the user's friends
+	\item fans: Total number of fans of a user
+	\item average-stars: Average rating provided by the user
+	\item compliments: A count of votes for different types of compliments. Compliments are: cool, cute, funny, hot, list, more, note, photos, plain, profile, writer
+	\item elite: List of the years the user has been an elite user
+\end{itemize}
+
+Review Content
+There are a total of $1,569,264$ reviews available in the dataset and filtering out reviews written for businesses in PA results in $46,569$ reviews.
+\begin{itemize}
+	\item votes: Votes received by the review for categories like cool, funny and useful from other users on Yelp
+	\item user\_id: Unique id (hash) of the user name
+	\item review\_id: Unique id (hash) of the review
+	\item stars: Rating provided by the user for a business
+	\item date: The date on which this rating/review was posted on Yelp
+	\item text: Text of the review
+	\item type: Constant value of 'review'
+	\item business\_id: Unique id (hash) of the business name
+\end{itemize}
+
+For the content based recommendation algorithm, 
+
+
+\subsubsection{ER Diagram}
+\subsubsection{Descriptive Statistics}
+\subsubsection{Subset Data}
+
+\subsection{Supervised Learning Model}
 TODO: origin of ANN, terminology of neurons, layers, activation functions.
 
 ANN were originally motivated by the goal of having machines that could mimic the brain. ANN's architecture consists of input later, hidden layer(s) and output layer. The input layer is the feature vector of training data with a bias term (figure \ref{fig:figure_ann_architecture}).
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{figure_ann_architecture}
 	\caption[ANN Architecture]{ANN Architecture}
@@ -206,27 +228,72 @@ where $f$ is an activation function, a function that determines the actual outpu
 	\end{equation}
 \end{enumerate}
 
+\subsubsection{Backpropagration}
+\subsubsection{Testing and Validation}
 
+\subsection{Similarity Measures}
 
+Recommendation system implementations can be broadly categorized as in-memory and model-based. In a memory based model, statistical techniques are applied in order to find users with similar preferences (neighbors). A weighted average of the ratings from users in the neighborhood is computed for the purpose \cite{carrillo}. On the other hand, model based techniques use data mining algorithms to train a model for predicting user recommendations.
 
+Collaborative filtering technique, an in-memory model, was developed by computing pairwise similarities among users and items \cite{breese}. Weighted arithmetic mean is commonly used in a RS in conjunction with the similarity metric to compute the predicted rating for a user-item pair. 
 
+Let  $ R(u, i) $ be the rating to be computed for user $ u $ and item $ i $. $ U $ is the set of users that have rated the item $ i $ and $sim(u, u_{k})$ is the similarity between the users $u$ and $u_{k}$ \cite{ricci, sorensen}
+\begin{equation}
+R(u, i) = {\sum\limits^{}_{i\in{U}} sim(u, u_{k}) * r(u_{k}, i)}
+\end{equation}
+Similarity functions are real valued functions that measure the degree of similarity between a pair of objects and are commonly used in Collaborative Filtering techniques to measure similarity between users and items. Here are some of the common similarity measures \cite{ricci}:
 
+\begin{itemize}
+	\item Euclidean distance: In a n{}-dimensional space, Euclidean distance between two vectors $p$ and $q$ is defined as
+	\begin{equation}
+	E(p, q) = \sqrt{\sum_{i=1}^n (p_{i} - q_{i})^{2}}
+	\end{equation} 
+\end{itemize}
+\begin{itemize}
+	\item Minkowski distance: It is a generalization of Euclidean distance and defined as
+	\begin{equation}
+	M(p, q) = ({\sum_{i=1}^n |p_{i} - q_{i}|^{r}})^{\dfrac{1}{r}}
+	\end{equation} 
+\end{itemize}
+\begin{itemize}
+	\item Mahalanobis distance: The Mahalanobis distance is a measure of the distance between a point P and a distribution D, introduced by P. C. Mahalanobis \cite{mahalanobis} where $\sigma$ is covariance matrix of the data
+	\begin{equation}
+	M(p, q) = \sqrt{(p - q) \sigma^{-1} (p - q)^{T}}
+	\end{equation} 
+\end{itemize}
+\begin{itemize}
+	\item Cosine similarity: It is a very common approach that measures similarity as cosine of the angle between n-dimensional vectors where $.$ is vector dot product and $ ||p|| $ is  norm of the vector
+	\begin{equation}
+	cos(p, q) = \dfrac{(p \bullet q)}{\lVert p \Vert \Vert q \Vert}
+	\end{equation} 
+\end{itemize}
+\begin{itemize}
+	\item Pearson correlation: It is a measure of correlation between two data points, $p$ and $q$ is
+	\begin{equation}
+	P(p, q) = \dfrac{cov(p, q)}{\sigma _{p} \times \sigma _{q}}
+	\end{equation} 
+\end{itemize}
+Collaborative filtering techniques are hugely popular and perform well where there is sufficient rating information but their effectiveness suffers from following well-known problems:
+\begin{enumerate}
+	\item Data Sparsity: It is related to the unavailability of ratings for a large number of items \cite{linden}. 
+	\item Cold-Start: A cold-start problem occurs when a new item is added to the catalog or a new user enters the system) \cite{schein}
+	\item Scalability: Requires very expensive computations and grows polynomially with the number of users and items in a database \cite{papagelis}
+\end{enumerate}
+Model-based recommendation systems, in contrast, train a learning model to find patterns in the data and determine a parameter vector on feature dimension such that the prediction error (or loss) is minimized. \cite{ge, wu, amini} developed regression (predict the rating) models whereas \cite{zhang-iyengar, resnick} developed classification (recommend item or not) models for the recommendation systems.
 
+Accuracy of predictions is the most important property of a recommendation system and there are a number of options to measure it. Broadly, prediction accuracy measures are classified as \cite{ricci}
 
+\begin{enumerate}
+	\item Ratings prediction: If the system predicts the rating of an item by a user (commonly used as 1-star to 5-star ratings), Root Mean Squared Error (RMSE), Sum of Square Error (SSE), Mean Square Error (MSE) and Mean Absolute Error (MAE) are common error metrics [find references on how these metrics are used with recommendations]
+	\item Class prediction: If the system models the predictions as a classification problem, where the predicted value is binary (yes/no, useful/not-useful), following error metrics are commonly used: Precision, Recall (True Positive Rate - TPR), False Positive Rate (FPR). A comparison curve of TPR and FPR, called Receive Operating Characteristic (ROC) curve, illustrates the performance of the classifier [find references]
+	\item Ranking prediction: If the system ranks items according to user's preference, Normalized Distance-based Performance Measure (NDPM), is commonly used as an error metric. [find references]
+\end{enumerate}
 
-\subsection{Optimization}
+\section{Computational Experiments}
 
-\subsection{Train, Test and Validation Approaches}
+\section{Results and Discussion}
 
-\newpage\section{Results and Discussion}
-
-\subsection{Data model and Exploratory Data Analysis}
-
-\subsection{Results}
-
-\newpage\section{Conclusions}
-
-\newpage\section{References}
+\section{Conclusions}
 
 \begin{thebibliography}{100}  
 \bibitem{adomavicius-2005} Adomavicius, G., \& Tuzhilin, A. (2005). Toward the next generation of recommender systems: A survey of the state-of-the-art and possible extensions. \textit{Knowledge and Data Engineering, IEEE Transactions on,17(6)}, 734-749.
@@ -279,6 +346,7 @@ where $f$ is an activation function, a function that determines the actual outpu
 \bibitem{zhang-narayan} Zhang, K., Narayanan, R., \& Choudhary, A. N. (2010). Voice of the Customers: Mining Online Customer Reviews for Product Feature-based Ranking. \textit{WOSN,10}, 11-11.
 \bibitem{zhang-iyengar} Zhang, T., \& Iyengar, V. S. (2002). Recommender systems using linear classifiers. \textit{The Journal of Machine Learning Research}, 2, 313-334.
 \bibitem{zheng} Zheng, Y. (2014). Semi-supervised context-aware matrix factorization: using contexts in a way of latent factors. \textit{Proceedings of the 29th Annual ACM Symposium on Applied Computing}. ACM.
+\bibitem{yelp-dataset} https://www.yelp.com [dataset challenge]
 \bibitem{marsland} Marsland, Stephen. \textit{Machine learning: an algorithmic perspective}. CRC press, 2015.
 \bibitem{jang} J. -S. R. Jang, C.-T. Sun, and E. Mizutani, \textit{Neuro-Fuzzy and Soft Computing: A Computational Approach to Learning and Machine Intelligence}. Englewood Cliffs, NJ: Prentice-Hall, 1997.
 \bibitem{ozkan} Özkan, Coşkun, and Filiz Sunar Erbek. "The comparison of activation functions for multispectral Landsat TM image classification." \textit{Photogrammetric Engineering \& Remote Sensing} 69.11 (2003): 1225-1234.
@@ -288,9 +356,4 @@ where $f$ is an activation function, a function that determines the actual outpu
 
 \end{thebibliography} 
 
-\begin{flushleft}
-
-\end{flushleft}
-
-\bigskip
 \end{document}
