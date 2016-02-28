@@ -7,6 +7,7 @@
 %\usepackage{amssymb,amsfonts,textcomp}
 %\usepackage{array}
 %\linespread{2}
+\usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{amssymb}
@@ -117,33 +118,64 @@ We demonstrate the efficiency of this approach using Yelp Dataset \cite{yelp-dat
 \label{fig:figure_er_diagram}
 \end{figure}
 
-The dataset has a total of $61,184$ businesses from $27$ different cities with $366,715$ users who wrote $1,569,264$ reviews. A business can be categorized as one of the 783 categories such as \textit{Appliances \& Repair}, \textit{Bars}, \textit{Car Rental}, \textit{Doctors}, \textit{Restaurants}, etc. and review content and style can vary for different categories of businesses. For the research, we choose the category \textit{Restaurants} but the concepts, analysis and results of this research can be extended to other categories. We choose PA state that has $3,041$ businesses and further filter the data under for the category \textit{Restaurants} which results in $1,361$ restaurants.
+The dataset has a total of $61,184$ businesses from $27$ different cities with $366,715$ users who wrote $1,569,264$ reviews. A business can be categorized as one of the 783 categories such as \textit{Appliances \& Repair}, \textit{Bars}, \textit{Car Rental}, \textit{Doctors}, \textit{Restaurants}, etc. and review content and style can vary for different categories of businesses. 
 
-Business Content
-\begin{itemize}
-	\item business\_id: Unique id (hash) of the business
-	\item full\_address, city, state: Postal address of the business
-	\item hours: The hours a business is open for each day of the week
-	\item open: A yes/no flag to indicate if the business is open for service
-	\item categories: A list of categories that describe the service provided at the business
-	\item review\_count: Total count of reviews received by the business
-	\item name: Name of the business
-	\item neighborhoods: A list of categories describing the neighborhood of the business
-	\item longitude, latitude: Longitude and latitude of the businesses' location
-	\item stars: Average rating for the business
-	\item attributes: A list of categories that describes the business (ex: Ambience, Music, Noise Level, Parking, etc)
-	\item takes reservations, delivery, parking, wheelchair accessible, outdoor seating, has tv, accepts cards, good for kids/groups: A yes/no flag to indicate if the service/amenity is available at the business
-	\item attire: Style of attire recommended for customers visiting the business
-	\item price range: On a scale of of 1-4, use 1 for low price and 4 for high price business
-	
-	\item 783 categories
-	\item 78 attributes
-	\item 15 hours
-	\item 175 neighborhoods
-	\item 6 parking
-\end{itemize}
+For the research, we choose the category \textit{Restaurants} and filter out businesses that are closed. Data for $PA$ is extracted and joined against $User$ and $Review$ data objects to get the final dataset. This final dataset has a total of $42,337$ observations for $1,116$ restaurants and $13,869$ users. It should be noted that the concepts, observations and results presented as part of this research are valid and can be easily extended to any category other than $Restaurants$.
 
-$78\%$ of the businesses receive $50$ or less reviews with an average rating of $3.6$ and the distribution of review counts in shown in \ref{fig:histogram_review_count}
+Data is split into train/test dataset such that $70\%$ restaurants ($781$) are used to create the training dataset and remaining $30\%$ ($335$) is used to generate the test dataset. To prepare the final dataset for training the model, review and user data corresponding to train and test restaurants are extracted and it produced a total of $30,676$ and $11,661$ observations respectively. Descriptive statistics for the features used to train the ANN model are shown in Table \ref{feature_descriptive_stats}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lllllllll}
+		\hline
+		DataSet    & Feature        & Mean    & StdDev  & Median & Min & Max   & Range & Skew  \\ \hline
+		Restaurant & review\_count  & 43      & 65.06   & 18     & 3   & 695   & 692   & 4.08  \\
+		Restaurant & average\_stars & 3.57    & 0.7     & 3.5    & 1   & 5     & 4     & -0.67 \\ \hline
+		User       & fans           & 2.85    & 24.89   & 0      & 0   & 1298  & 1298  & 31.52 \\
+		User       & average\_stars & 3.73    & 0.84    & 3.82   & 0   & 5     & 5     & -1.1  \\
+		User       & review\_count  & 52.34   & 150.64  & 10     & 1   & 4573  & 4572  & 10.14 \\
+		User       & friends        & 8.68    & 58.35   & 1      & 0   & 2103  & 2103  & 21.16 \\
+		User       & compliments    & 42.95   & 717.46  & 0      & 0   & 41514 & 41514 & 42.41 \\
+		User       & votes          & 219.55  & 2029.48 & 11     & 0   & 86200 & 86200 & 29.7  \\
+		User       & yelping\_days  & 1597.54 & 725.34  & 1522   & 365 & 4109  & 3744  & 0.49  \\ \hline
+		Review     & votes\_cool    & 0.4     & 1.06    & 0      & 0   & 29    & 29    & 6.65  \\
+		Review     & votes\_funny   & 0.28    & 0.91    & 0      & 0   & 25    & 25    & 7.5   \\
+		Review     & votes\_useful  & 0.89    & 1.63    & 0      & 0   & 48    & 48    & 5.49  \\
+		Review     & date\_days     & 1130.79 & 623.64  & 990    & 358 & 3884  & 3526  & 0.99  \\
+		Review     & review\_stars  & 3.75    & 1.2     & 4      & 1   & 5     & 4     & -0.8  \\ \hline
+	\end{tabular}
+	\caption{Feature Descriptive Stats}
+	\label{feature_descriptive_stats}
+\end{table}
+
+Skewness of a population is defined by the formula 
+\begin{equation}
+\gamma_{1}=\frac{\mu_{3}}{\mu_{2}^{\frac{3}{2}}}
+\end{equation}
+
+where $\mu_{2}$, $\mu_{3}$ are the second and third \textit{central moments}. kth central moment is defined as 
+
+\begin{equation}
+m_{k}=\frac{1}{n} \sum_{i=1}^n (x_{i} - \overline{x})^{k}
+\end{equation}
+
+Skewness is a measure of symmetry such that \textit{skew} metric is $0$ when the distribution of the variable is  perfectly symmetric, negative for long tail on the left side and positive for long tail to the right. Number of stars in the review dataset, which is the predictor variable, is the rating provided by the user for a specific restaurant. An analysis of the predictor variable, shows a surprisingly negatively skewed distribution in favor of 4 or 5 star ratings as shown in Figure \ref{fig:hist_review_stars}. It is observed that 66\% of the ratings are 4 or 5 stars. 4 is the most preferred star rating with close to 35\% of the ratings having 4 stars and only 7\% of the ratings have 1 star.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{ratings_per_year_grouped_by_star}
+\caption{Yearly Ratings Categorized by Star Rating}
+\label{fig:ratings_per_year_grouped_by_star}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{hist_review_stars}
+	\caption{Histogram of Rating Stars}
+	\label{fig:hist_review_stars}
+\end{figure}
+
+$57\%$ of the restaurants receive $25$ or less reviews and there are $13$ ($2\%$) restaurants that have 250 or reviews. A restaurant, on an average, receives $37$ reviews with a rating of $3.6$ and the distribution of review counts in shown in Figure \ref{fig:histogram_review_count}. Outliers are data object that have some characteristics that are different from most of the other data objects and will have an influence on the accuracy of a supervised learning model \cite{rousseeuv}. To prevent the reviews from these restaurants causing bias in model estimates, they are removed from training.
 
 \begin{figure}[h]
 \centering
@@ -152,41 +184,22 @@ $78\%$ of the businesses receive $50$ or less reviews with an average rating of 
 \label{fig:histogram_review_count}
 \end{figure}
 
+User content is available for users yelping since Oct-2014 to Jan-2015 and for the purpose of model development, this information is converted to number of days from Jan-2016. It is observed that 82\% of the users write $50$ or less reviews at an average of $10.2$. 
 
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{histogram_user_average_stars}
+\caption{Average Stars by Users}
+\label{fig:histogram_user_average_stars}
+\end{figure*}
 
-Out of the available 33 attribute types, we identify a subset of types that have data for at-least 70\% of the examples and are relevant to a restaurant business and these attribute types are  \textit{Order at Counter, Alcolhol, Ambience, Price Range, Takeout, Good for, Parking, Attire, Caters, Accepts Credit Cards, Delivery, Has TV, Outdoor Seating, Parking Lot, Waiter Serice, WIFI, Takes Reservations, Noise Level}. On an average a restaurant receives $37$ reviews with a rating of $3.6$
-
-
-
-User Content
-Out of $366,715$ users, $14,466$ have written reviews for restaurants in PA. A user object has following attributes:
-\begin{itemize}
-	\item yelping\_since: Date from when the user has started yelping
-	\item votes: Votes received by the user for categories like cool, funny and useful from other users on Yelp
-	\item review\_count: Total reviews posted
-	\item name: User name
-	\item user\_id: Unique id (hash) of the user name
-	\item friends: List of ids of the user's friends
-	\item fans: Total number of fans of a user
-	\item average-stars: Average rating provided by the user
-	\item compliments: A count of votes for different types of compliments. Compliments are: cool, cute, funny, hot, list, more, note, photos, plain, profile, writer
-	\item elite: List of the years the user has been an elite user
-\end{itemize}
-
-Review Content
+\textbf{Review Content}
 There are a total of $1,569,264$ reviews available in the dataset and filtering out reviews written for businesses in PA results in $46,569$ reviews.
-\begin{itemize}
-	\item votes: Votes received by the review for categories like cool, funny and useful from other users on Yelp
-	\item user\_id: Unique id (hash) of the user name
-	\item review\_id: Unique id (hash) of the review
-	\item stars: Rating provided by the user for a business
-	\item date: The date on which this rating/review was posted on Yelp
-	\item text: Text of the review
-	\item type: Constant value of 'review'
-	\item business\_id: Unique id (hash) of the business name
-\end{itemize}
 
-For the content based recommendation algorithm, 
+\subsubsection{Outliers}
+"define an outlier as described in the regression analysis book"
+
+
 
 
 \subsubsection{ER Diagram}
@@ -353,6 +366,7 @@ Accuracy of predictions is the most important property of a recommendation syste
 \bibitem{duch} Duch, Włodzisław, and Norbert Jankowski. "Survey of neural transfer functions." \textit{Neural Computing Surveys} 2.1 (1999): 163-212.
 \bibitem{civco} Civco, D., and Y. Waug, 1994. Classification of multispectral, multitemporal, multisource spatial data using artificial neural networks, \textit{ASPRS/ACSM Annual Convention \& Exposition}, 25–28 April, Reno, Nevada (American Society for Photogrammetry and Remote Sensing, Bethesda, Maryland), pp. 123–133 
 \bibitem{kaminsky} Kaminsky, E.J., H. Barad, and W. Brown, 1997. Textural neural network and version space classifiers for remote sensing, \textit{International Journal of Remote Sensing}, 18(4):741–762.
+\bibitem{rousseeuv} Rousseeuv, P.J., and A.M. Leroy, 1987. Robust Regression and Outlier Detection. Wiley, New York.
 
 \end{thebibliography} 
 
