@@ -23,12 +23,13 @@ load_orig_data = function() {
   user_data$user_compliments = user_data$user_compliments_hot + user_data$user_compliments_more + user_data$user_compliments_cute + user_data$user_compliments_writer + user_data$user_compliments_note + user_data$user_compliments_hot + user_data$user_compliments_cool + user_data$user_compliments_profile + user_data$user_compliments_list + user_data$user_compliments_photos + user_data$user_compliments_funny
   user_data$user_votes = user_data$user_votes_cool + user_data$user_votes_funny + user_data$user_votes_useful
   # convert yelping_since to days from 1/1/2016
-  user_data$user_yelping_days = as.numeric(as.Date('2016-01-01') - as.Date(paste0(user_data$user_yelping_since, '-01')))
+  user_data$user_yelping_since = paste0(user_data$user_yelping_since, '-01')
+  user_data$user_yelping_days = as.numeric(as.Date('2016-01-01') - as.Date(user_data$user_yelping_since))
   
   # drop columns that are not needed
   user_data = select(user_data, -starts_with('user_compliments_'))
   user_data = select(user_data, -starts_with('user_votes_'))
-  user_data = select(user_data, -user_friends, -user_type, -user_elite, -user_name, -user_yelping_since)
+  user_data = select(user_data, -user_friends, -user_type, -user_elite, -user_name)
   user_data = rename(user_data,  user_friends = user_tot_friends)
   
   
@@ -109,6 +110,7 @@ train_restaurant = read.csv('../../data/train_test/train_restaurant.csv')
 train_user = read.csv('../../data/train_test/train_user.csv')
 train_review = read.csv('../../data/train_test/train_review.csv')
 
+
 #### descriptive stats from user data ####
 describe(train_user)
 describe(train_review)
@@ -145,6 +147,7 @@ inner_join(train_restaurant %>% filter(business_review_count > 250) %>% select(b
 train_review %>% summarize(mean_votes_useful = mean(review_votes_useful))
 boxplot(train_restaurant %>% filter(business_review_count < 250) %>% select(business_review_count), ylab = 'Count of Reviews')
 boxplot(train_restaurant %>% select(business_review_count), ylab = 'Count of Reviews')
-
+train_restaurant %>% filter(business_review_count < 250) %>% 
+  summarize(mean_review_count = mean(business_review_count), mean_rating = mean(business_stars))
 
 
