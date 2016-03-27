@@ -70,10 +70,10 @@ write.csv(train_restaurant, file = '../../data/train_test/train_restaurant_post_
 write.csv(train_user, file = '../../data/train_test/train_user_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
 write.csv(train_data, file = '../../data/train_test/train_data_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
 
-write.csv(train_review, file = '../../data/train_test/test_review_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
-write.csv(train_restaurant, file = '../../data/train_test/test_restaurant_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
-write.csv(train_user, file = '../../data/train_test/test_user_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
-write.csv(train_data, file = '../../data/train_test/test_data_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
+write.csv(test_review, file = '../../data/train_test/test_review_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
+write.csv(test_restaurant, file = '../../data/train_test/test_restaurant_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
+write.csv(test_user, file = '../../data/train_test/test_user_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
+write.csv(test_data, file = '../../data/train_test/test_data_post_normalizing.csv', row.names=FALSE, quote = FALSE, eol = "\n")
 
 
 
