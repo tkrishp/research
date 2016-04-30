@@ -1,1 +1,5 @@
-__author__ = 'tulasi'
+
+def main():
+    print 'inside main'
+
+main()

@@ -24,6 +24,7 @@ class NeuralNetModel(object):
         self._adagrad = def_adagrad
         self._adadelta = def_adadelta
         self._adamax = def_adamax
+        self.proba = None
 
     def load_train_test(self):
         train = pd.read_csv(os.path.join(DATA_DIR, 'train.csv'))
@@ -44,13 +45,10 @@ class NeuralNetModel(object):
 
         # Add 1st hidden layer; it should also accept input vector dimension
         # Dense is a fully connected layer with tanh as the activation function
-        self._model.add(Dense(256, input_shape=(self.X.shape[1], ), init='uniform', activation='tanh'))
+        self._model.add(Dense(32, input_shape=(self.X.shape[1], ), init='uniform', activation='tanh'))
         self._model.add(Dropout(0.5))
 
-        self._model.add(Dense(256, activation='tanh'))
-        self._model.add(Dropout(0.5))
-
-        self._model.add(Dense(256, activation='tanh'))
+        self._model.add(Dense(64, activation='tanh'))
         self._model.add(Dropout(0.5))
 
         # output layer with sigmoid activation
@@ -58,11 +56,12 @@ class NeuralNetModel(object):
 
     def train_and_predict(self, epoch, opt):
         self._model.compile(loss='categorical_crossentropy', optimizer=opt)
-        self._model.fit(self.X, self.y, nb_epoch=epoch, validation_data=(self.X_test, self.y_test), show_accuracy=True)
-        proba = self._model.predict_proba(self.X_test, batch_size=32)
-        pred_cls = self._model.predict_classes(self.X_test, batch_size=32)
+        self._model.fit(self.X, self.y, nb_epoch=epoch, show_accuracy=True, validation_split=0.8)
+        self.proba = self._model.predict_proba(self.X_test, batch_size=32)
         np.set_printoptions(suppress=True)
-        np.savetxt('results.csv', np.around(pred_cls, 5), delimiter=",")
+        np.savetxt('results.csv', np.around(self.proba, 5), delimiter=",")
+        loss, accuracy = self._model.evaluate(self.X_test, self.y_test, show_accuracy=True, verbose=0)
+        print 'loss: %f, accuracy: %f' % (loss, accuracy)
 
     def execute(self, epoch, opt):
         print '----- load train/test data -----'

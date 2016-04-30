@@ -1,4 +1,3 @@
-set.seed(12345)
 
 train_test_split = function(restaurant) {
   
