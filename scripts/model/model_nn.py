@@ -9,12 +9,9 @@ from keras.utils import np_utils
 
 from default_optimizers import def_sgd, def_adagrad, def_adadelta, def_adamax
 
-MAIN_DIR = '/home/tulasi/github/research'
-DATA_DIR = os.path.join(MAIN_DIR, 'data/train_test')
-
 
 class NeuralNetModel(object):
-    def __init__(self):
+    def __init__(self, data_dir):
         self.X = None
         self.y = None
         self.X_test = None
@@ -25,10 +22,11 @@ class NeuralNetModel(object):
         self._adadelta = def_adadelta
         self._adamax = def_adamax
         self.proba = None
+        self._data_dir = data_dir
 
     def load_train_test(self):
-        train = pd.read_csv(os.path.join(DATA_DIR, 'train.csv'))
-        test = pd.read_csv(os.path.join(DATA_DIR, 'test.csv'))
+        train = pd.read_csv(os.path.join(self._data_dir, 'train.csv'))
+        test = pd.read_csv(os.path.join(self._data_dir, 'test.csv'))
 
         self.X = train.values.copy()
         # to_categorical expects 0 indexed continous values for class, so, -1 on review star
@@ -56,10 +54,10 @@ class NeuralNetModel(object):
 
     def train_and_predict(self, epoch, opt):
         self._model.compile(loss='categorical_crossentropy', optimizer=opt)
-        self._model.fit(self.X, self.y, nb_epoch=epoch, show_accuracy=True, validation_split=0.8)
+        self._model.fit(self.X, self.y, nb_epoch=epoch, show_accuracy=True, validation_split=0.2)
         self.proba = self._model.predict_proba(self.X_test, batch_size=32)
         np.set_printoptions(suppress=True)
-        np.savetxt('results.csv', np.around(self.proba, 5), delimiter=",")
+        np.savetxt(os.path.join(self._data_dir, 'results.csv'), np.around(self.proba, 5), delimiter=",")
         loss, accuracy = self._model.evaluate(self.X_test, self.y_test, show_accuracy=True, verbose=0)
         print 'loss: %f, accuracy: %f' % (loss, accuracy)
 
@@ -88,9 +86,10 @@ def main():
     parser = argparse.ArgumentParser(prog='ANN Model', description='ANN model for predicting restaurant stars')
     parser.add_argument('--epoch', type=int, default=10, help='Number of epochs to run the ANN')
     parser.add_argument('--opt', type=str, default='sgd', help='Optimizier to use. Valid values are [sgd|adagrad|adadelta|adamax')
+    parser.add_argument('--data-dir', type=str, help='Directory with train and test datasets')
     args = parser.parse_args()
 
-    nn = NeuralNetModel()
+    nn = NeuralNetModel(args.data_dir)
     nn.execute(epoch=args.epoch, opt=args.opt)
 
 if __name__ == '__main__':
