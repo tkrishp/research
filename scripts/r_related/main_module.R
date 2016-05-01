@@ -100,7 +100,15 @@ create_train_test_split = function() {
 
 save_train_test_split = function(data_dir, train_restaurant, train_user, train_review, train, 
                                  test_restaurant, test_user, test_review, test) {
-
+  train_restaurant = format(train_restaurant, scientific=FALSE)
+  train_user = format(train_user, scientific=FALSE)
+  train_review = format(train_review, scientific=FALSE)
+  train = format(train, scientific=FALSE)
+  test_restaurant = format(test_restaurant, scientific=FALSE)
+  test_user = format(test_user, scientific=FALSE)
+  test_review = format(test_review, scientific=FALSE)
+  test = format(test, scientific=FALSE)
+  
   #### save training/test data #### 
   write.csv(train_review, file = paste0(data_dir, '/', 'train_review.csv'), row.names=FALSE, quote = FALSE, eol = "\n")
   write.csv(train_restaurant, file = paste0(data_dir, '/', 'train_restaurant.csv'), row.names=FALSE, quote = FALSE, eol = "\n")
@@ -128,9 +136,7 @@ sub_dir2 = paste0(dir, '/', 'processed')
 dir.create(dir, showWarnings = TRUE, recursive = TRUE, mode = "0777")
 dir.create(sub_dir1, showWarnings = TRUE, recursive = TRUE, mode = "0777")
 dir.create(sub_dir2, showWarnings = TRUE, recursive = TRUE, mode = "0777")
-
-save_train_test_split(sub_dir1,
-                      train_restaurant, train_user, train_review, train, 
+save_train_test_split(sub_dir1, train_restaurant, train_user, train_review, train, 
                       test_restaurant, test_user, test_review, test)
 
 source("winsorizing.R")
@@ -140,16 +146,17 @@ source("normalize.R")
 c(train_restaurant, train_user, train_review, test_restaurant, test_user, test_review) := normalize_data()
 
 train = inner_join(inner_join(train_user, train_review, by = "user_id"), train_restaurant, by = "business_id")
-train = train %>% select(review_id, business_id, user_id, business_stars, business_review_count, 
-                         user_fans, user_friends, user_yelping_days, user_compliments, user_votes, user_review_count, user_average_stars, 
+train = train %>% select(business_stars, business_review_count, 
+                         user_fans, user_friends, user_yelping_days, user_compliments, 
+                         user_votes, user_review_count, user_average_stars, 
                          review_date_days, review_votes_cool, review_votes_funny, review_votes_useful, 
-                         review_stars, review_date)
+                         review_stars)
 
 test = inner_join(inner_join(test_user, test_review, by = "user_id"), test_restaurant, by = "business_id")
-test = train %>% select(review_id, business_id, user_id, business_stars, business_review_count, 
-                        user_fans, user_friends, user_yelping_days, user_compliments, user_votes, user_review_count, user_average_stars, 
-                        review_date_days, review_votes_cool, review_votes_funny, review_votes_useful, 
-                        review_stars, review_date)
+test = test %>% select(business_stars, business_review_count, 
+                       user_fans, user_friends, user_yelping_days, user_compliments, user_votes, user_review_count, user_average_stars, 
+                       review_date_days, review_votes_cool, review_votes_funny, review_votes_useful, 
+                       review_stars)
 save_train_test_split(sub_dir2,
                       train_restaurant, train_user, train_review, train, 
                       test_restaurant, test_user, test_review, test)
