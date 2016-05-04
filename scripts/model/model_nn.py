@@ -1,5 +1,4 @@
 import argparse
-import pandas as pd
 import numpy as np
 import os
 
@@ -8,6 +7,7 @@ from keras.layers.core import Dense, Dropout
 from keras.utils import np_utils
 
 from default_optimizers import def_sgd, def_adagrad, def_adadelta, def_adamax
+import data_processor as dp
 
 
 class NeuralNetModel(object):
@@ -24,9 +24,7 @@ class NeuralNetModel(object):
         self.proba = None
         self._data_dir = data_dir
 
-    def load_train_test(self):
-        train = pd.read_csv(os.path.join(self._data_dir, 'train.csv'))
-        test = pd.read_csv(os.path.join(self._data_dir, 'test.csv'))
+    def process_train_test(self, train, test):
 
         self.X = train.values.copy()
         # to_categorical expects 0 indexed continous values for class, so, -1 on review star
@@ -54,32 +52,38 @@ class NeuralNetModel(object):
 
     def train_and_predict(self, epoch, opt):
         self._model.compile(loss='categorical_crossentropy', optimizer=opt)
-        self._model.fit(self.X, self.y, nb_epoch=epoch, show_accuracy=True, validation_split=0.2)
+        hist = self._model.fit(self.X, self.y, nb_epoch=epoch, validation_split=0.2)
+        print hist.history
         self.proba = self._model.predict_proba(self.X_test, batch_size=32)
-        np.set_printoptions(suppress=True)
-        np.savetxt(os.path.join(self._data_dir, 'results.csv'), np.around(self.proba, 5), delimiter=",")
         loss, accuracy = self._model.evaluate(self.X_test, self.y_test, show_accuracy=True, verbose=0)
         print 'loss: %f, accuracy: %f' % (loss, accuracy)
 
     def execute(self, epoch, opt):
+
         print '----- load train/test data -----'
-        self.load_train_test()
+        data_loader = dp.DataLoader(self._data_dir)
+        data_loader.load_train_test()
 
-        print('----- Build model -----')
-        self.build_network()
+        for state in data_loader.train_dataset.keys():
+            print '\n\n'
+            print '\t> processing state [%s] ' % state
+            self.process_train_test(data_loader.train_dataset[state], data_loader.test_dataset[state])
 
-        print('----- Training model -----')
-        if opt == 'sgd':
-            self.train_and_predict(epoch, self._sgd)
+            print('\t\t----- Build model -----')
+            self.build_network()
 
-        if opt == 'adagrad':
-            self.train_and_predict(epoch, self._adagrad)
+            print('\t\t----- Training model -----')
+            if opt == 'sgd':
+                self.train_and_predict(epoch, self._sgd)
 
-        if opt == 'adadelta':
-            self.train_and_predict(epoch, self._adadelta)
+            if opt == 'adagrad':
+                self.train_and_predict(epoch, self._adagrad)
 
-        if opt == 'adamax':
-            self.train_and_predict(epoch, self._adamax)
+            if opt == 'adadelta':
+                self.train_and_predict(epoch, self._adadelta)
+
+            if opt == 'adamax':
+                self.train_and_predict(epoch, self._adamax)
 
 
 def main():
