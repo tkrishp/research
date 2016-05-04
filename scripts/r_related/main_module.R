@@ -146,14 +146,14 @@ source("normalize.R")
 c(train_restaurant, train_user, train_review, test_restaurant, test_user, test_review) := normalize_data()
 
 train = inner_join(inner_join(train_user, train_review, by = "user_id"), train_restaurant, by = "business_id")
-train = train %>% select(business_stars, business_review_count, 
+train = train %>% select(business_stars, business_review_count, business_state,
                          user_fans, user_friends, user_yelping_days, user_compliments, 
                          user_votes, user_review_count, user_average_stars, 
                          review_date_days, review_votes_cool, review_votes_funny, review_votes_useful, 
                          review_stars)
 
 test = inner_join(inner_join(test_user, test_review, by = "user_id"), test_restaurant, by = "business_id")
-test = test %>% select(business_stars, business_review_count, 
+test = test %>% select(business_stars, business_review_count, business_state,
                        user_fans, user_friends, user_yelping_days, user_compliments, user_votes, user_review_count, user_average_stars, 
                        review_date_days, review_votes_cool, review_votes_funny, review_votes_useful, 
                        review_stars)
