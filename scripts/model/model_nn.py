@@ -4,7 +4,7 @@ import plotter as plt
 from time import strftime, localtime
 import csv
 
-seed = 12356
+seed = 65432
 import numpy as np
 np.random.seed(seed)
 
@@ -14,6 +14,30 @@ from keras.utils import np_utils
 from keras.regularizers import l1l2, l2
 from default_optimizers import def_sgd, def_adagrad, def_adadelta, def_adamax, def_adam
 import data_processor as dp
+
+"""
+seed: 12356
+opt: all
+epoch: 500
+results: results_05082016_010430
+model:
+        self._model.add(Dense(16,
+                              input_shape=(self.X.shape[1], ),
+                              init='uniform',
+                              W_regularizer=l2(l=0.01),
+                              b_regularizer=l2(l=0.01),
+                              activation='tanh'))
+        # self._model.add(Dropout(0.2))
+
+        self._model.add(Dense(16,
+                              W_regularizer=l2(l=0.01),
+                              b_regularizer=l2(l=0.01),
+                              activation='tanh'))
+        # self._model.add(Dropout(0.2))
+
+        # output layer with sigmoid activation
+        self._model.add(Dense(5, activation='softmax'))
+"""
 
 
 class NeuralNetModel(object):
@@ -55,19 +79,25 @@ class NeuralNetModel(object):
 
         # Add 1st hidden layer; it should also accept input vector dimension
         # Dense is a fully connected layer with tanh as the activation function
-        self._model.add(Dense(16,
+        self._model.add(Dense(128,
                               input_shape=(self.X.shape[1], ),
                               init='uniform',
                               W_regularizer=l2(l=0.01),
                               b_regularizer=l2(l=0.01),
                               activation='tanh'))
-        # self._model.add(Dropout(0.2))
+        self._model.add(Dropout(0.3))
 
-        self._model.add(Dense(16,
+        self._model.add(Dense(256,
                               W_regularizer=l2(l=0.01),
                               b_regularizer=l2(l=0.01),
                               activation='tanh'))
-        # self._model.add(Dropout(0.2))
+        self._model.add(Dropout(0.3))
+
+        self._model.add(Dense(128,
+                              W_regularizer=l2(l=0.01),
+                              b_regularizer=l2(l=0.01),
+                              activation='tanh'))
+        self._model.add(Dropout(0.3))
 
         # output layer with sigmoid activation
         self._model.add(Dense(5, activation='softmax'))
