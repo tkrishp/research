@@ -14,7 +14,10 @@ class DataLoader(object):
     def load_train_test(self):
         self.train = pd.read_csv(os.path.join(self._data_dir, 'train.csv'))
         self.test = pd.read_csv(os.path.join(self._data_dir, 'test.csv'))
-        self._separate_data_state()
+
+        # binarize business_state
+        self.train = pd.get_dummies(self.train).drop(['business_state_WI'], axis=1)
+        self.test = pd.get_dummies(self.test).drop(['business_state_WI'], axis=1)
 
     def _separate_data_state(self):
         for state in self.train['business_state'].unique():
